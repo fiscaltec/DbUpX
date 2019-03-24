@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="dbup-core">
+      <HintPath>..\DbUp\src\dbup-sqlserver\bin\Debug\netstandard1.3\dbup-core.dll</HintPath>
+    </Reference>
+    <Reference Include="dbup-sqlserver">
+      <HintPath>..\DbUp\src\dbup-sqlserver\bin\Debug\netstandard1.3\dbup-sqlserver.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="dbup-core" Version="4.2.0" />
+    <PackageReference Include="dbup-sqlserver" Version="4.2.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="SqlScriptPrefixExtensions.cs" />
+  </ItemGroup>
+</Project>
