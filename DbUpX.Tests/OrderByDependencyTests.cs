@@ -8,7 +8,7 @@ namespace DbUpX.Tests
 {
     public class OrderByDependencyTests
     {
-        private readonly string _prefix = "@requires";
+        private readonly string _prefix = "#requires";
 
         [Fact]
         public void DoesNotAffectIndependentScripts()
@@ -27,10 +27,10 @@ namespace DbUpX.Tests
         [Fact]
         public void SortsByDependencies()
         {
-            var a = new SqlScript("a.sql", "contents of a @requires b");
+            var a = new SqlScript("a.sql", "contents of a #requires b");
             var b = new SqlScript("b.sql", "contents of b");
-            var x = new SqlScript("x.sql", "-- @requires b \r\n contents of x");
-            var y = new SqlScript("y.sql", "contents of y @requires a");
+            var x = new SqlScript("x.sql", "-- #requires b \r\n contents of x");
+            var y = new SqlScript("y.sql", "contents of y #requires a");
             var z = new SqlScript("z.sql", "contents of z");
 
             var unsorted = new[] { y, x, z, a, b };
@@ -42,10 +42,10 @@ namespace DbUpX.Tests
         [Fact]
         public void AllowsMultipleDependencies()
         {
-            var a = new SqlScript("a.sql", "contents of a @requires b, c");
+            var a = new SqlScript("a.sql", "contents of a #requires b, c");
             var b = new SqlScript("b.sql", "contents of b");
-            var c = new SqlScript("c.sql", "contents of c @requires x, y, z");
-            var x = new SqlScript("x.sql", "-- @requires y \r\n contents of x");
+            var c = new SqlScript("c.sql", "contents of c #requires x, y, z");
+            var x = new SqlScript("x.sql", "-- #requires y \r\n contents of x");
             var y = new SqlScript("y.sql", "contents of y");
             var z = new SqlScript("z.sql", "contents of z");
 
@@ -59,7 +59,7 @@ namespace DbUpX.Tests
         public void ComplainsAboutMissing()
         {
             var a = new SqlScript("bee.sql", "contents of bee");
-            var b = new SqlScript("owl.sql", "contents of owl @requires be");
+            var b = new SqlScript("owl.sql", "contents of owl #requires be");
 
             var unsorted = new[] { a, b };
 
@@ -71,7 +71,7 @@ namespace DbUpX.Tests
         public void AllowsNameToBeSuffix()
         {
             var bear = new SqlScript("bear.sql", "contents of bee");
-            var chair = new SqlScript("chair.sql", "contents of chair @requires ear");
+            var chair = new SqlScript("chair.sql", "contents of chair #requires ear");
 
             var unsorted = new[] { chair, bear };
 
@@ -84,7 +84,7 @@ namespace DbUpX.Tests
         {
             var b = new SqlScript("bear.sql", "contents of bear");
             var d = new SqlScript("fear.sql", "contents of fear");
-            var c = new SqlScript("um.sql", "contents of um @requires ear");
+            var c = new SqlScript("um.sql", "contents of um #requires ear");
 
             var unsorted = new[] { c, b, d };
 
@@ -95,9 +95,9 @@ namespace DbUpX.Tests
         [Fact]
         public void ComplainsAboutCycle()
         {
-            var a = new SqlScript("a.sql", "contents of a @requires b");
-            var b = new SqlScript("b.sql", "contents of b @requires c");
-            var c = new SqlScript("c.sql", "contents of c @requires a");
+            var a = new SqlScript("a.sql", "contents of a #requires b");
+            var b = new SqlScript("b.sql", "contents of b #requires c");
+            var c = new SqlScript("c.sql", "contents of c #requires a");
 
             var unsorted = new[] { a, b, c };
 

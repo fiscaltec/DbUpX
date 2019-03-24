@@ -104,7 +104,7 @@ var upgrader = DeployChanges.To.SqlDatabase(connectionString)
                .OrderBy(s => s.Name).Concat(
                
         scripts.WithPrefix("MyAssembly.Scripts.Dependent.")
-               .OrderByDependency("@requires"))
+               .OrderByDependency("#requires"))
     )
     .Build()
     .PerformUpgrade();
@@ -128,7 +128,7 @@ The `Dependent` scripts declare the scripts they depend on by including comments
 such as:
 
 ```sql
--- @requires UserTable, ProductTable
+-- #requires UserTable, ProductTable
 ```
 
 See `OrderByDependencyTests.cs` for examples.
